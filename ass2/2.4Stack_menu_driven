@@ -1,0 +1,135 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct node
+{
+
+    int data;
+    struct node *next;
+
+} node;
+
+typedef struct stack
+{
+
+    node *head;
+    int size;
+
+} stack;
+
+void display(stack *s)
+{
+    node *temp = s->head;
+    while (temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+}
+
+void push(stack *s)
+{
+
+    int data;
+    printf("Enter an integer: ");
+    scanf("%d", &data);
+    node *new_node = (node *)malloc(sizeof(node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    new_node->next = s->head;
+    s->head = new_node;
+    s->size++;
+}
+
+int pop(stack *s)
+{
+
+    if (s->head == NULL)
+    {
+        printf("stack is empty !");
+        return 0;
+    }
+    node *temp = s->head;
+    s->head = s->head->next;
+    int x = temp->data;
+    free(temp);
+    s->size--;
+
+    return x;
+}
+
+int size(stack *s)
+{
+    return (*s).size;
+}
+
+int top(stack *s)
+{
+    if (s->head == NULL)
+    {
+        printf("stack is empty !");
+        return 0;
+    }
+    return s->head->data;
+}
+
+bool isEmpty(stack *s)
+{
+    return s->head == NULL;
+}
+
+int main()
+{
+
+    int n;
+    stack s;
+    s.head = NULL;
+    s.size = 0;
+
+    while (1)
+    {
+        printf("\n\nMenu:\n\n  push    --->  1    pop     --->  2\n  isEmpty --->  3    size    --->  4\n  top     --->  5    Display  -->  6\n  for Exit -->  0\n");
+        scanf("%d", &n);
+
+        switch (n)
+        {
+        case 1:
+            push(&s);
+            break;
+
+        case 2:
+            printf("%d", pop(&s));
+            break;
+
+        case 3:
+            if (isEmpty(&s))
+                printf("Empthy");
+            else
+                printf("Not Empty");
+            break;
+
+        case 4:
+            printf("%d", size(&s));
+            break;
+
+        case 5:
+            printf("%d", top(&s));
+            break;
+
+        case 6:
+            display(&s);
+            break;
+
+        case 0:
+            exit(0);
+
+        default:
+            printf("Wrong choice");
+            break;
+        }
+    }
+
+    return 0;
+}
