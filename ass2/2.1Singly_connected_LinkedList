@@ -1,0 +1,163 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    int data;
+    struct node *next;
+} node;
+
+
+// take user input for list ________________________________________
+node* Take_input() {
+
+    printf("\nTo terminate input enter '-1' at the end\n");
+    int data;
+    scanf("%d", &data);
+    node *head = NULL, *tail;
+
+    while(data != -1)
+    {
+        node *new_node = (node*) malloc(sizeof(node));
+        new_node -> data = data;
+        new_node -> next = NULL; 
+
+        if(head == NULL)
+        {
+            head = new_node;
+            tail = new_node;
+        }
+        else
+        {
+            tail -> next = new_node;
+            tail = new_node;
+        }
+        scanf("%d", &data);
+    }
+    return head;
+}
+
+// deletion of a node_______________________________________________
+node* deletion(node *head) {
+    
+    printf("\nGive the 0 indexing position to delete: ");
+    int i, position;
+    scanf("%d", &position);
+    node *temp = head;
+    
+    if(position == 0)
+    {
+        head = head -> next;
+        free(temp);
+    }
+    else
+    {
+        for(i = 0; i < position - 1; temp = temp -> next, i++)
+            if(temp == NULL) return head;
+        
+        node *a = temp -> next;
+        temp -> next = temp -> next -> next;
+        free(a);
+    }
+    
+    return head;
+}
+
+
+// insersion of a new node _________________________________________
+node* insersion(node *head) {
+
+    printf("\nEnter value and 0 indexing position: ");
+    int i, data, position;
+    scanf("%d%d", &data, &position);
+
+    node *new_nod = (node*) malloc(sizeof(node));
+    new_nod -> data = data;
+    new_nod -> next = NULL;
+    
+    node *temp = head;
+
+    if(head == NULL)
+    {
+        head = new_nod;
+    }
+
+    else if(position == 0)
+    {
+        new_nod -> next = head;
+        head = new_nod;
+    }
+    else
+    {
+        for(i = 0; i < position - 1; temp = temp -> next, i++)
+            if(temp == NULL) return head;
+        new_nod -> next = temp -> next;
+        temp -> next = new_nod;
+    }
+    return head;
+}
+
+// to print the list________________________________________________
+void print(node *head) {
+
+    while(head != NULL)
+    {
+        printf("%d ", head -> data);
+        head = head -> next;
+    }
+    printf("\n");
+}
+
+// count the number of Node_________________________________________
+void count(node *head) {
+    
+    int i = 0;
+    for( ; head != NULL; head = head -> next, i++);
+    printf("\nNumber Of Nodes: %d\n", i);
+}
+
+// Reverse The linked_list__________________________________________
+node* Reverse(node *head) {
+
+    node *prev = NULL;
+    node *next = head -> next;
+
+    while(head != NULL)
+    {
+        if(next == NULL)
+        {
+            head -> next = prev;
+            prev = head;
+            head = next;
+        }
+        else
+        {
+            head -> next = prev;
+            prev = head;
+            head = next;
+            next = next -> next;
+        }
+    }
+    return prev;
+}
+
+// main function____________________________________________________
+int main(){
+
+    node *head;
+    head = Take_input();
+    print(head);
+    
+    head = insersion(head);
+    print(head);
+    
+    head = deletion(head);
+    print(head);
+    
+    count(head);
+    
+    head = Reverse(head);
+    printf("\nReverse of existed list:\n");
+    print(head);
+    
+    return 0;
+}
