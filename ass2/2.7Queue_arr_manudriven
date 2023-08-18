@@ -1,0 +1,128 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct queue {
+    int *arr;
+    int size, front_ind, back_ind, capacity;
+} queue;
+
+// Function to Set Essential Parameters of Queue________________________________
+void set_queue(queue *q, int capacity) {
+    q->arr = (int*) calloc(capacity, sizeof(int));
+    q->size = q->front_ind = q->back_ind = 0;
+    q->capacity = capacity;
+}
+
+// Function to Insert Element in the Queue at Last______________________________
+void push(queue *q) {
+    if(q->size == q->capacity) 
+    {
+        printf("Queue is Full !");
+        return;
+    }
+    printf("Enter a integer: ");
+    scanf("%d", &q->arr[q->back_ind++]);
+    q->back_ind %= q->capacity;
+    q->size++;
+}
+
+// Function to Get Last Value from Queue________________________________________
+int back(queue *q) {
+    if(q->size == 0)
+    {
+        printf("Queue is Empty !");
+        return 0;
+    }
+    printf("Back Element: ");
+    return q->arr[(q->back_ind - 1 + q->capacity) % q->capacity];
+}
+
+// Function to Delete the First Element of the Queue____________________________
+void pop(queue *q) {
+    if(q->size == 0)
+    {
+        printf("Queue is Empty !");
+        return;
+    }
+    q->front_ind = (q->front_ind + 1) % q->capacity;
+    q->size--;
+    printf("popped element: %d", q->arr[(q->front_ind + q->capacity - 1) % q->capacity]);
+}
+
+// Function to Get First Value from Queue_______________________________________
+int front(queue *q) {
+    if(q->size == 0)
+    {
+        printf("Queeu is Empty !");
+        return 0;
+    }
+    printf("Front element: ");
+    return q->arr[q->front_ind];
+}
+
+int isEmpty(queue *q) {
+    return q->size == 0;
+}
+
+int isFull(queue *q) {
+    return q->size == q->capacity;
+}
+
+int getsize(queue *q) {
+    return q->size;
+}
+
+void display(queue *q) {
+    if(q->size == 0)
+    {
+        printf("Queue is Empty !");
+        return;
+    }
+    int size = q->size;
+    while(size--)
+        printf("%d ", q->arr[(q->front_ind + q->size - size - 1)% q->capacity]);
+}
+
+int main() {
+    
+    queue q;
+    int size;
+    printf("Enter the capacity of Queue: ");
+    scanf("%d", &size);
+    set_queue(&q,size);
+    
+    while(1)
+    {
+        int n;
+        printf("\n\nMenu:\n\n  push    --->  1    pop     --->  2\n  isEmpty --->  3    size    --->  4\n  front   --->  5    back    --->  6\n  diplay  --->  7    isFull  --->  8\n  for Exit -->  0\n");
+        scanf("%d", &n);
+
+        switch (n)
+        {
+            case 1: push(&q);
+            break;
+            case 2: pop(&q);
+            break;
+            case 3: if(isEmpty(&q)) printf("Empty.");
+                    else printf("NOT Empty.");
+            break;
+            case 4: printf("Queue size: %d", getsize(&q));
+            break;
+            case 5: printf("%d", front(&q));
+            break;
+            case 6: printf("%d", back(&q));
+            break;
+            case 7: display(&q);
+            break;
+            case 8: if(isFull(&q)) printf("Queue Full.");
+                    else printf("Queue is NOT Full");
+            break;
+            case 0: exit(0);
+            break;
+            default: printf("Wrong choice!");
+            break;
+        }
+    }
+    free(q.arr);
+    return 0;
+}
