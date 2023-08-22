@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct node
+{
+    int data;
+    struct node *next;
+} node;
+
+typedef struct stack
+{
+
+    node *head;
+    int size;
+
+} stack;
+
+typedef struct queue_by_stack {
+    stack A, B;
+} queue_by_stack;
+
+void display(stack *s)
+{
+    if(s->head == NULL) printf("Queue is Empty !");
+    node *temp = s->head;
+    while (temp != NULL)
+    {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+}
+
+void push(stack *s, int data)
+{
+    node *new_node = (node *)malloc(sizeof(node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    new_node->next = s->head;
+    s->head = new_node;
+    s->size++;
+}
+
+int pop(stack *s)
+{
+
+    if (s->head == NULL)
+    {
+        printf("Queue is empty !");
+        return 0;
+    }
+    node *temp = s->head;
+    s->head = s->head->next;
+    int x = temp->data;
+    free(temp);
+    s->size--;
+
+    return x;
+}
+
+int size(stack *s)
+{
+    return (*s).size;
+}
+
+int top(stack *s)
+{
+    if (s->head == NULL)
+    {
+        printf("Queue is empty !");
+        return 0;
+    }
+    return s->head->data;
+}
+
+bool isEmpty(stack *s)
+{
+    return s->head == NULL;
+}
+
+void enqueue(queue_by_stack* q) {
+    int data;
+    printf("Enter data: ");
+    scanf("%d", &data);
+    push(&q->A, data);
+}
+
+int dequeue(queue_by_stack* q) {
+    while (size(&q->A) > 1)
+        push(&q->B, pop(&q->A));
+
+    int x = pop(&q->A);
+
+    while(size(&q->B))
+        push(&q->A, pop(&q->B));
+
+    return x;
+}
+
+int front(stack *s) {
+
+    if(s -> head == NULL)
+    {
+        printf("Queue is Empty !");
+        return 0;
+    }
+    node *temp = s -> head;
+    while(temp->next != NULL)
+        temp = temp -> next;
+
+    return temp -> data;
+}
+
+int main() {
+    queue_by_stack q;
+    q.A.size = q.B.size = 0;
+    q.A.head = q.B.head = NULL; 
+
+    while(1)
+    {
+        int n;
+        printf("\n\nMenu:\n\n  enqueue --->  1    dequeue --->  2\n  isEmpty --->  3    size    --->  4\n  front   --->  5    back    --->  6\n  display --->  7    for Exit -->  0\n");
+        scanf("%d", &n);
+
+        switch (n)
+        {
+            case 1: enqueue(&q);
+            break;
+            case 2: dequeue(&q);
+            break;
+            case 3: if(isEmpty(&q.A)) printf("Empty");
+                    else printf("NOT Empty");
+            break;
+            case 4: if(size(&q.A) == 0) printf("Empty");
+                    else printf("NOT Empty");
+            break;
+            case 5: printf("%d", front(&q.A));
+            break;
+            case 6: printf("%d", top(&q.A));
+            break;
+            case 7: display(&q.A);
+            break;
+            case 0: exit(0);
+            break;
+            default: printf("Wrong choice!");
+            break;
+        }
+    }
+    
+    return 0;
+}
