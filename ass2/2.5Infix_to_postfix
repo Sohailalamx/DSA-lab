@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct node
 {
@@ -17,16 +16,6 @@ typedef struct stack
     int size;
 
 } stack;
-
-void display(stack *s)
-{
-    node *temp = s->head;
-    while (temp != NULL)
-    {
-        printf("%d ", temp->data);
-        temp = temp->next;
-    }
-}
 
 void push(stack *s, char data)
 {
@@ -69,11 +58,6 @@ int top(stack *s)
         return 0;
     }
     return s->head->data;
-}
-
-bool isEmpty(stack *s)
-{
-    return s->head == NULL;
 }
 
 int main()
