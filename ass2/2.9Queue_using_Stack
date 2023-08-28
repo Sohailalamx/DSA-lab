@@ -132,8 +132,7 @@ int main() {
             case 3: if(isEmpty(&q.A)) printf("Empty");
                     else printf("NOT Empty");
             break;
-            case 4: if(size(&q.A) == 0) printf("Empty");
-                    else printf("NOT Empty");
+            case 4: printf("size: %d", size(&q.A));
             break;
             case 5: printf("%d", front(&q.A));
             break;
