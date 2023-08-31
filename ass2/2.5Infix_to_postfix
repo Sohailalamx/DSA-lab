@@ -84,7 +84,7 @@ int main()
             if(infix[i] == '^') push(&s, infix[i++]);
             else if(infix[i] == '/' || infix[i] == '*')
             {
-                while(top(&s) == '/' || top(&s) == '*') printf("%c",pop(&s));
+                while(top(&s) == '/' || top(&s) == '*' || top(&s) == '^') printf("%c",pop(&s));
                 push(&s, infix[i++]);
             }
             else if(infix[i] == '+' || infix[i] == '-')
