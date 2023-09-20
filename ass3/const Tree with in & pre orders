@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct treeNode {
+    int key;
+    struct treeNode *left, *right;
+} treeNode;
+
+static int x = 0;
+
+treeNode* makeTree(int *in_order, int *pre_order, int in_start_ind, int in_end_ind) { 
+    
+    if(in_start_ind > in_end_ind) return NULL;
+
+    treeNode *root = (treeNode*) calloc(1, sizeof(treeNode));
+    root -> key = pre_order[x];
+    int i;
+    for(i = in_start_ind; in_order[i] != pre_order[x]; i++); 
+    x++;
+
+    root -> left = makeTree(in_order, pre_order, in_start_ind, i-1);
+    root -> right = makeTree(in_order, pre_order, i+1, in_end_ind);
+
+    return root;
+}
+
+void post_order(treeNode *root) {
+    if(root == NULL) return;
+    post_order(root -> left);
+    post_order(root -> right);
+    printf("%d ", root -> key);
+}
+
+int main() {
+    int n, i;
+    printf("number of elements of array: ");
+    scanf("%d", &n);
+    int *in_order = (int*) calloc(n, sizeof(int)); 
+    int *pre_order = (int*) calloc(n, sizeof(int));
+
+    printf("Enter in_order array:\n");
+    for(i = 0; i < n; i++) scanf("%d", in_order + i);
+
+    printf("Enter pre_order array:\n");
+    for(i = 0; i < n; i++) scanf("%d", pre_order + i);
+
+    treeNode *root = makeTree(in_order, pre_order, 0, n-1);
+
+    printf("post_order:\n");
+    post_order(root);
+
+    free(in_order);
+    free(pre_order);
+
+    return 0;
+}
