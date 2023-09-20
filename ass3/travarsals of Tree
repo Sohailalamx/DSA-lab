@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct treeNode
+{
+    int key;
+    struct treeNode *left, *right;  
+} treeNode;
+
+treeNode* createTree(treeNode *root) {
+
+    int data;
+    printf("Enter data: ");
+    scanf("%d", &data);
+
+    if(data == -1) return NULL;
+
+    root = (treeNode*) malloc(sizeof(treeNode));
+    root -> key = data;
+
+    root -> left = createTree(root -> left);
+    root -> right = createTree(root -> right);
+
+    return root;
+}
+
+void inOrderTravalsal(treeNode *root) {
+    if(root == NULL) return;
+    inOrderTravalsal(root -> left);
+    printf("%d ", root -> key);
+    inOrderTravalsal(root -> right);
+}
+
+void preOrderTravarsal(treeNode *root) {
+    if(root == NULL) return;
+    printf("%d ", root -> key);
+    preOrderTravarsal(root -> left);
+    preOrderTravarsal(root -> right);
+}
+
+void postOrderTravarsal(treeNode *root) {
+    if(root == NULL) return;
+    postOrderTravarsal(root -> left);
+    postOrderTravarsal(root -> right);
+    printf("%d ", root -> key);
+}
+
+int main() {
+
+    treeNode *root = NULL;
+    root = createTree(root);
+
+    while(1)
+    {
+        fflush(stdin);
+        printf("\n\n in-order   --->  b\n pre-order  --->  c\n post-order  -->  d\n Exit    ------>  e\n");
+        char x;
+        scanf("%c", &x);
+        switch (x)
+        {
+            case 'b': printf("inOrderTravarsal:\n");
+                      inOrderTravalsal(root);
+                break;
+
+            case 'c': printf("preOrderTravarsal:\n");
+                      preOrderTravarsal(root);
+                break;
+
+            case 'd': printf("postOrderTravarsal:\n");
+                      postOrderTravarsal(root);
+                break;
+
+            case 'e': exit(0);
+                break;
+            
+            default: printf("Wrong choice !\n");
+                break;
+        }
+    }
+    return 0;
+}
