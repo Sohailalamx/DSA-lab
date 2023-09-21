@@ -44,13 +44,22 @@ node* Make_child_circle(int total_child) {
 void winner(node *head, int k) {
 
     node *temp = head;
+    if(k == 1)
+    {
+        while (temp -> next != head)
+        {
+            temp = temp -> next;
+        }
+        printf("child %d will win !", temp -> child);
+    }
     while(temp -> next != temp)
     {
-        for(int i = 0; i < k - 2; i++)
+        for(int i = 1; i < k - 1; i++)
              temp = temp -> next;
 
         node *auxi = temp -> next;
         temp -> next = auxi -> next;
+        temp = temp -> next;
         free(auxi);
     }
     printf("child %d will win !", temp -> child);
@@ -72,7 +81,7 @@ int main() {
     int total_child;
     printf("Total child: ");
     scanf("%d", &total_child);
-    if(total_child < 1) 
+    if(total_child <= 1) 
     {
         printf("Invalid input for total_child ! Please enter a positive integer.\n");
         return 0;
